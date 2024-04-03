@@ -27,9 +27,9 @@ cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 def draw_card(hand):
   hand.append(random.choice(cards))
 
+#improve printing
 def calculate_score(hand):
   score = sum(hand)
-  print("your score is: " + str(score))
   
   if 11 in hand and score > 21:
     hand[hand.index(11)] = 1
@@ -45,7 +45,8 @@ def calculate_score(hand):
     
   else:
     return score
-    
+
+#improve printing
 def compare_score(user_score, dealer_score):
   if user_score > dealer_score:
     print("you win")
