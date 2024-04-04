@@ -16,44 +16,45 @@
 
 #start- 2 cards each open, dealer 1 close
 #ask if user wants to draw another card
-#if yes, draw another card
-#if no, end game- open all cards compare scores
+# V if yes, draw another card
+# if no, end game- open all cards compare scores
 # V if dealer has less than 17, they must draw another card
 # v ace can be 1 or 11 depending on the score
 import random
 
-cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-
 def draw_card(hand):
+  cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
   hand.append(random.choice(cards))
 
-#improve printing
 def calculate_score(hand):
   score = sum(hand)
   
   if 11 in hand and score > 21:
     hand[hand.index(11)] = 1
     return score
-    
   elif score > 21:
-    print("you lose")
-    return game_over == True
-    
-  elif score == 0:
-    print("you win")
-    return game_over == True
-    
+    score = 0
+    return score
+  elif score == 21:
+    return score
   else:
     return score
 
-#improve printing
-def compare_score(user_score, dealer_score):
+
+def compare_score(user_score, dealer_score, dealer_hand):
   if user_score > dealer_score:
-    print("you win")
+    print("You win!")
+    print(f"your score is {user_score}, higher than the dealer's {dealer_score}")
+    print(f"dealer's hand: {dealer_hand}")
+    
   elif user_score < dealer_score:
-    print("you lose")
+    print("you lose!")
+    print(f"your score is {user_score}, lower than the dealer's {dealer_score}")
+    print(f"dealer's hand: {dealer_hand}")
   else:
-    print("draw")
+    print("it' a draw!")
+    print(f"your score is {user_score}, same as the dealer's {dealer_score}")
+    print(f"dealer's hand: {dealer_hand}")
 
 
 def new_game():
@@ -61,33 +62,52 @@ def new_game():
 
   user_hand = []
   dealer_hand = []
-  
-  user_hand = [random.choice(cards), random.choice(cards)]
-  dealer_hand = [random.choice(cards), random.choice(cards)]
+
+  for _ in range(2):
+    draw_card(user_hand)
+    draw_card(dealer_hand)
+
   dealer_hand_view = [str(dealer_hand[0])]
 
   if sum(dealer_hand) < 17:
-    dealer_hand.append(random.choice(cards))
+    draw_card(dealer_hand)
     dealer_hand_view.append('X')
     dealer_hand_view.append('X')
   else:
     dealer_hand_view.append('X')
-
+    
   user_score = calculate_score(user_hand)
   dealer_score = calculate_score(dealer_hand)
 
-  print(f"Your hand is {user_hand}, your score is {user_score}")
-  print(f"Dealer hand is {dealer_hand_view}")
-
+  if user_score == 0 or dealer_score == 0 or user_score > 21:
+    print("game over")
+    print(f"your hand: {user_hand} your score: {user_score}")
+    print(f"dealer hand: {dealer_hand} dealer score: {dealer_score}")
+    game_over = True
+    
   while not game_over:
+    
+    
+    print(f"Your hand is {user_hand}, your score is {user_score}")
+    print(f"Dealer hand is {dealer_hand_view}")
+    
     draw_another = input("Do you want to draw another card? 'y' or 'n': ")
     if draw_another == 'y':
       draw_card(user_hand)
       user_score = calculate_score(user_hand)
-      print(f"Your hand is {user_hand}, your score is {user_score}")
-      print(f"Dealer hand is {dealer_hand_view}")
+      
+      if user_score == 0 or user_score > 21:
+        print("game over")
+        print(f"your hand: {user_hand} your score: {user_score}")
+        print(f"dealer hand: {dealer_hand} dealer score: {dealer_score}")
+        game_over = True
     else:
-      compare_score(user_score, dealer_score)
+      compare_score(user_score, dealer_score, dealer_hand)
       game_over = True
 
+  play_again = input("would you like to play again? 'y' or 'n': ")
+  if play_again == 'y':
+    new_game()
+  else:
+    print("goodbye")
 new_game()
