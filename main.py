@@ -21,6 +21,7 @@
 # V if dealer has less than 17, they must draw another card
 # v ace can be 1 or 11 depending on the score
 import random
+from replit import clear
 
 def draw_card(hand):
   cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
@@ -31,6 +32,7 @@ def calculate_score(hand):
   
   if 11 in hand and score > 21:
     hand[hand.index(11)] = 1
+    score = sum(hand)
     return score
   elif score > 21:
     score = 0
@@ -107,7 +109,9 @@ def new_game():
 
   play_again = input("would you like to play again? 'y' or 'n': ")
   if play_again == 'y':
+    clear()
     new_game()
   else:
     print("goodbye")
+
 new_game()
